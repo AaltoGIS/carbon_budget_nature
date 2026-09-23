@@ -1,0 +1,39 @@
+name: decent-mobility
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pandas
+  - numpy
+  - pyarrow
+  - geopandas
+  - shapely
+  - pyproj
+  - h3-py
+  - h3pandas
+  - osmnx=1.6.0
+  - networkx
+  - r5py
+  - rasterio
+  - scipy
+  - scikit-learn
+  - statsmodels
+  - matplotlib
+  - seaborn
+  - mapclassify
+  - contextily
+  - xyzservices
+  - folium
+  - plotly
+  - pydeck
+  - lonboard
+  - datashader
+  - colorcet
+  - dask
+  - dask-geopandas
+  - boto3
+  - graphviz
+  - jupyterlab
+  - pip
+  - pip:
+    - overturemaps

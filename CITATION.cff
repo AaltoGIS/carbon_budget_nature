@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the associated paper."
+title: "Carbon budget compliance shapes unequal mobility outcomes in Finland: analysis code"
+type: software
+authors:
+  - family-names: Marín-Flores
+    given-names: César
+    affiliation: Department of Built Environment, Aalto University
+  - family-names: Dey
+    given-names: Subhrasankha
+    affiliation: Department of Built Environment, Aalto University
+  - family-names: Zhang
+    given-names: Xiuning
+    affiliation: Centre for Advanced Spatial Analysis, University College London
+  - family-names: Arcaute
+    given-names: Elsa
+    affiliation: Centre for Advanced Spatial Analysis, University College London
+  - family-names: Tenkanen
+    given-names: Henrikki
+    affiliation: Department of Built Environment, Aalto University
+year: 2026
+license: MIT

@@ -1,0 +1,22 @@
+# Inputs are not versioned (size / licence); see data/README.md.
+# output/ holds only aggregated, non-personal tables (see output/README.md).
+data/*
+!data/README.md
+!data/category_list.csv
+!data/category_mapping.json
+!data/classification_paper.txt
+scratch/
+output/*per_user*
+output/*.png
+output/*.pdf
+output/*.svg
+*.pbf
+*.tif
+*.zip
+
+# notebook and python artefacts
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.vscode/
+.DS_Store
