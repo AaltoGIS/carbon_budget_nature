@@ -2,7 +2,7 @@
 
 Analysis code for the paper
 
-> **Carbon budget compliance shapes unequal mobility outcomes in Finland**
+> **Beyond electrification: Meeting minimum mobility needs within carbon budgets**
 > César Marín-Flores, Subhrasankha Dey, Xiuning Zhang, Elsa Arcaute, Henrikki Tenkanen
 > Department of Built Environment, Aalto University; Centre for Advanced Spatial Analysis, University College London
 
