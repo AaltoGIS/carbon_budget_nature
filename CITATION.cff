@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the associated paper."
-title: "Carbon budget compliance shapes unequal mobility outcomes in Finland: analysis code"
+title: "Electrification fails to reconcile urban transport with 2030 climate targets: analysis code"
 type: software
 authors:
   - family-names: Marín-Flores

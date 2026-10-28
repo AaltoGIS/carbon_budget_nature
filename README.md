@@ -3,7 +3,7 @@
 
 Analysis code for the paper
 
-> *Electrification fails to reconcile urban transport with 2030 climate target*
+> *Electrification fails to reconcile urban transport with 2030 climate targets*
 > César Marín-Flores, Subhrasankha Dey, Xiuning Zhang, Elsa Arcaute, Henrikki Tenkanen
 > Department of Built Environment, Aalto University; Centre for Advanced Spatial Analysis, University College London
 
