@@ -35,6 +35,8 @@ import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from shapely.geometry import Point, Polygon
 
+_H3_V4 = hasattr(h3, "cell_to_boundary")   # h3-py >= 4 renamed the API; the notebooks use the v3 names
+
 CITIES = ["helsinki", "turku", "tampere", "oulu"]
 CITY_LABEL = {"helsinki": "Helsinki", "turku": "Turku", "tampere": "Tampere", "oulu": "Oulu"}
 MODES = ["bike", "pt", "car"]
@@ -55,11 +57,12 @@ def suffix(city):
 
 
 def hex_polygon(h):
-    return Polygon([(lng, lat) for lat, lng in h3.cell_to_boundary(h)])
+    boundary = h3.cell_to_boundary(h) if _H3_V4 else h3.h3_to_geo_boundary(h)
+    return Polygon([(lng, lat) for lat, lng in boundary])
 
 
 def hex_point(h):
-    lat, lng = h3.cell_to_latlng(h)
+    lat, lng = h3.cell_to_latlng(h) if _H3_V4 else h3.h3_to_geo(h)
     return Point(lng, lat)
 
 

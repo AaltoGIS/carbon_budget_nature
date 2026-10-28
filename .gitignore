@@ -1,18 +1,29 @@
 # Inputs are not versioned (size / licence); see data/README.md.
 # output/ holds only aggregated, non-personal tables (see output/README.md).
-data/*
-!data/README.md
-!data/category_list.csv
-!data/category_mapping.json
-!data/classification_paper.txt
-scratch/
-output/*per_user*
-output/*.png
-output/*.pdf
-output/*.svg
+/data/*
+!/data/README.md
+!/data/category_list.csv
+!/data/category_mapping.json
+!/data/classification_paper.txt
+/scratch/
+/output/*per_user*
+/output/*.png
+/output/*.pdf
+/output/*.svg
 *.pbf
 *.tif
 *.zip
+
+# demo/: the synthetic users (demo/scratch/data), the open-data subsets
+# (demo/data, demo/scratch) and demo/expected_output ARE versioned;
+# files produced by running the demo and job logs are not.
+demo/work/
+demo/output/*
+!demo/output/.gitkeep
+demo/data/users_and_works.parquet
+demo/data/user_pois_*.parquet
+demo/scratch/*_typ_cat*.parquet
+demo/*.png
 
 # notebook and python artefacts
 .ipynb_checkpoints/
