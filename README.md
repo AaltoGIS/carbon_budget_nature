@@ -1,6 +1,5 @@
 # Electrification fails to reconcile urban transport with 2030 climate targets
 
-
 Analysis code for the paper
 
 > *Electrification fails to reconcile urban transport with 2030 climate targets*
@@ -32,8 +31,8 @@ implementation; the other regions follow the same steps with region-specific inp
 | `data/` | Small configuration files: POI category list, category mapping and the classification used in the paper. See `data/README.md` for the full list of inputs | |
 | `output/` | Aggregated, non-personal tables behind the figures (see `output/README.md`) | Figs. 1-4, Supplementary |
 | `tools/` | Script that derives the shared aggregates from the per-user results | |
-| `demo/` | Runnable demo of the mobile-phone stages on 100 **synthetic** users and small open-data subsets (see `demo/README.md`) | |
-| `environment-tested.txt` | Exact package versions of the environment the analysis was run in | |
+| `demo/` | Small demo dataset and runner for the mobile-phone stages (see `demo/README.md`) | |
+| `environment-tested.txt` | Package versions the analysis was run with | |
 
 ## Data
 
@@ -53,79 +52,55 @@ Large inputs and per-user intermediate results are not versioned. They are expec
 `data/`, `scratch/` (large intermediates) and `output/` (per-user results and figures), relative
 to the repository root. Notebooks are run from the repository root as the working directory.
 
-`output/` does contain the **aggregated tables behind every figure** (distributions, summary
-statistics, hexagon-level means with a minimum of five users, income-decile tables, hourly
-home/work presence). They are described in `output/README.md` and were produced with
-`tools/make_shared_outputs.py`. They are the data behind every figure and allow the results to be
-re-plotted and checked without access to the restricted data; the figure notebooks themselves read the
-per-user results, which are not shared.
+`output/` contains the aggregated tables behind every figure (distributions, summary statistics,
+hexagon-level means with a minimum of five users, income-decile tables, hourly home/work presence).
+They are described in `output/README.md` and were produced with `tools/make_shared_outputs.py`.
+The figures can be re-plotted from them without access to the restricted data.
 
-## Environment
+## System requirements
 
-The analysis was run with Python 3.10 in a conda environment; the packages are listed in
-`environment.yml`:
+- Python 3.10 and the packages in `environment.yml`. The exact versions used for the paper are in
+  `environment-tested.txt` (pandas 2.3.3, geopandas 1.1.4, shapely 2.1.2, pyarrow 23.0.1, h3 3.7.7,
+  osmnx 1.6.0, r5py 1.1.7, matplotlib 3.10.9). The notebooks use the h3-py version 3 API.
+- Java 21 or later (r5py).
+- Tested on Red Hat Enterprise Linux 9.8, x86_64 (CSC Roihu supercomputer). Pure Python; Linux and
+  macOS with the same conda environment should work but were not re-tested.
+- Hardware: the demo runs on a laptop (one core, under 4 GB of memory). The full pipeline keeps
+  origin–destination tables of 29 to 69 million pairs per mode in memory (about 30 GB) and the routing
+  stages take hours per region; they were run on CSC Roihu.
+
+## Installation
 
 ```bash
 conda env create -f environment.yml
 conda activate decent-mobility
+conda install -c conda-forge openjdk=21   # or any system JDK 21+
 ```
 
-The exact versions the analysis was run with are listed in `environment-tested.txt` (Python 3.10.20 in a
-Tykky/Apptainer container on CSC Roihu, Red Hat Enterprise Linux 9.8, x86_64; key packages: pandas 2.3.3,
-geopandas 1.1.4, shapely 2.1.2, pyarrow 23.0.1, h3 3.7.7, osmnx 1.6.0, r5py 1.1.7, matplotlib 3.10.9).
-The notebooks use the h3-py **version 3** API (`h3.geo_to_h3`, `h3.k_ring`); `tools/make_shared_outputs.py`
-works with both API versions.
+About 10–20 minutes on a normal desktop computer.
 
-Public transport routing (r5py) requires Java 21. Most routing and exposure-curve steps
-were executed on the CSC Roihu supercomputer because of the size of the origin–destination
-matrices (tens of millions of pairs per region).
+## Demo
 
-## System requirements, installation, demo and instructions for use
-
-### System requirements
-
-- **Operating system.** Tested on Red Hat Enterprise Linux 9.8 (x86_64, CSC Roihu) inside the container
-  described by `environment.yml`. The code is pure Python and is expected to run on Linux and macOS with
-  the same conda environment; this was not re-tested.
-- **Software.** Python 3.10 and the packages in `environment.yml` (exact versions in
-  `environment-tested.txt`); a Java runtime (OpenJDK 21 or later) for r5py, which every notebook imports.
-- **Hardware.** The demo runs on an ordinary laptop (one core, under 4 GB of memory). The full pipeline
-  holds origin-destination tables of 29 to 69 million pairs per mode in memory (about 30 GB) and the
-  routing stages take hours per region; they were run on CSC Roihu.
-
-### Installation guide
-
-```bash
-conda env create -f environment.yml      # typical time 10-20 minutes on a broadband connection
-conda activate decent-mobility
-```
-
-Java: `conda install -c conda-forge openjdk=21` inside the environment, or any system JDK 21+.
-
-### Demo
-
-`demo/` contains 100 synthetic users for two Helsinki-region areas (Kallio and Espoonlahti) and the
-subsets of the open-data intermediates they need (POIs and jobs per hexagon, CO₂e per origin-destination
-pair for the three modes, postal code areas), about 6 MB in total. No real mobile phone record is
-included. From the repository root:
+`demo/` runs stages 04 and 05 for Helsinki on a small dataset: 100 simulated users and the open-data
+inputs they need (about 6 MB). No real mobile phone record is included. From the repository root:
 
 ```bash
 python demo/run_demo.py
 ```
 
-This executes the seven unchanged Helsinki notebooks of stages 04 and 05 with `demo/` as working
-directory and writes the per-user weekly decent-mobility CO₂e to
-`demo/output/tour_{pt,car,bike}_helsinki_decent_per_user.parquet`, plus a run report with the wall time of
-every notebook. Expected per-user results are in `demo/expected_output/`; the run is deterministic, so they
-are reproduced exactly with the same package versions. Measured run time: 1.0 min on one core of a CSC Roihu
-node (under 4 GB of memory), plus up to a few minutes for the first import of the geolibraries and the Java
-runtime; expect about 5 minutes on a normal desktop computer.
-See `demo/README.md` for the list of outputs, the expected values and how the synthetic users are made.
+The script runs the seven Helsinki notebooks unchanged, with `demo/` as working directory. Output:
+weekly decent-mobility CO₂e per user and mode in `demo/output/tour_{pt,car,bike}_helsinki_decent_per_user.parquet`,
+and a run report with the time of each notebook. The expected results are in `demo/expected_output/`;
+the run is deterministic and reproduces them exactly with the same package versions.
 
-### Instructions for use
+Run time: about 1 minute on one core of a CSC Roihu node, plus a few minutes for the first import of the
+geolibraries and Java. Expect about 5 minutes on a normal desktop computer. See `demo/README.md`.
 
-To run the pipeline on your own mobility data, provide one table per region with the schema produced by
-`04_mobile_phone_stays/01_stays_helsinki.ipynb`, at `scratch/data/users_and_stays_3months{_city}.parquet`:
+## Instructions for use
+
+To run the pipeline on your own mobility data, provide one stays table per region at
+`scratch/data/users_and_stays_3months{_city}.parquet` with the schema produced by
+`04_mobile_phone_stays/01_stays_helsinki.ipynb`:
 
 | Column | Type | Meaning |
 |---|---|---|
@@ -135,21 +110,18 @@ To run the pipeline on your own mobility data, provide one table per region with
 | `home_gid9`, `work_gid9` | string | inferred home and work hexagons of the user |
 | `is_home`, `is_work` | int (0/1) | whether the stay is the home or the work location |
 
-Then place the open-data inputs listed in `data/README.md` and run the notebooks from the repository
-root in the order of the folder numbers (01 → 07), one notebook per region and mode. The aggregated,
-non-personal tables in `output/` are rebuilt from the per-user results with `tools/make_shared_outputs.py`.
+Place the open-data inputs listed in `data/README.md` and run the notebooks from the repository root in
+folder order (01 → 07), one notebook per region and mode. `tools/make_shared_outputs.py` rebuilds the
+aggregated tables in `output/` from the per-user results.
 
-### Reproduction instructions
+## Reproduction
 
-The full results of the paper cannot be reproduced without the Locomizer data. What can be reproduced:
+The full results cannot be reproduced without the Locomizer data. What can be reproduced:
 
-1. **Open-data stages (01 to 03)** from the inputs listed in `data/README.md`: POIs and jobs per hexagon,
-   the routed CO₂e per origin-destination pair for the three modes, and the accessibility-within-budget maps
-   (Fig. 1). The routing stages need tens of GB of memory and hours per region.
-2. **Mobile-phone stages (04 and 05)** on the synthetic users of `demo/`, or on your own stays table as
-   described above. The demo reproduces `demo/expected_output/` exactly.
-3. **The numbers behind Figs. 1 to 4 and the Supplementary figures** from the aggregated tables in
-   `output/`, described in `output/README.md`.
+1. Stages 01 to 03 (POIs and jobs per hexagon, routed CO₂e per origin–destination pair, accessibility
+   within budget, Fig. 1) from the open inputs in `data/README.md`. Tens of GB of memory and hours per region.
+2. Stages 04 and 05 on the demo dataset, or on your own stays table as described above.
+3. The numbers behind Figs. 1 to 4 and the Supplementary figures, from the tables in `output/`.
 
 ## Citation
 
